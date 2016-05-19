@@ -32,7 +32,7 @@ void * const kNonSelectedAllBGKey = (void * const) &kNonSelectedAllBGKey;
 @implementation PXAlertView (Customization)
 
 - (void)setStatusBarStyle:(UIStatusBarStyle)style {
-    self.statusBarStyle = style;
+    _statusBarStyle = style;
 }
 
 - (void)useDefaultIOS7Style {
