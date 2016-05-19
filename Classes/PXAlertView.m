@@ -52,7 +52,7 @@ static const CGFloat AlertViewVerticalEdgeMinMargin = 25;
 @implementation PXAlertView
 
 - (UIStatusBarStyle) preferredStatusBarStyle {
-    return statusBarStyle;
+    return _statusBarStyle;
 }
 
 - (UIWindow *)windowWithLevel:(UIWindowLevel)windowLevel
