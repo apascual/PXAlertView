@@ -10,6 +10,8 @@
 
 @interface PXAlertView (Customization)
 
+- (void)setStatusBarStyle:(UIStatusBarStyle)style;
+
 - (void)setWindowTintColor:(UIColor *)color;
 - (void)setBackgroundColor:(UIColor *)color;
 
