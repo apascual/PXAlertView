@@ -29,7 +29,7 @@ static const CGFloat AlertViewVerticalEdgeMinMargin = 25;
 
 @interface PXAlertView ()
 
-@property (nonatomic) UIStatusBarStyle statusBarStyle;
+@property (nonatomic) UIStatusBarStyle myStatusBarStyle;
 @property (nonatomic) BOOL buttonsShouldStack;
 @property (nonatomic) UIWindow *mainWindow;
 @property (nonatomic) UIWindow *alertWindow;
@@ -52,7 +52,7 @@ static const CGFloat AlertViewVerticalEdgeMinMargin = 25;
 @implementation PXAlertView
 
 - (UIStatusBarStyle) preferredStatusBarStyle {
-    return _statusBarStyle;
+    return self.myStatusBarStyle;
 }
 
 - (UIWindow *)windowWithLevel:(UIWindowLevel)windowLevel
@@ -116,7 +116,7 @@ static const CGFloat AlertViewVerticalEdgeMinMargin = 25;
 		[self.view addSubview:self.alertView];
 		
         // Default status bar style
-        self.statusBarStyle = UIStatusBarStyleLightContent;
+        self.myStatusBarStyle = UIStatusBarStyleLightContent;
 
 		// Title
 		self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(AlertViewContentMargin,

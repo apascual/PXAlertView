@@ -18,7 +18,7 @@ void * const kNonSelectedAllBGKey = (void * const) &kNonSelectedAllBGKey;
 
 @interface PXAlertView ()
 
-@property (nonatomic) UIStatusBarStyle statusBarStyle;
+@property (nonatomic) UIStatusBarStyle myStatusBarStyle;
 @property (nonatomic) UIView *backgroundView;
 @property (nonatomic) UIView *alertView;
 @property (nonatomic) UILabel *titleLabel;
@@ -32,7 +32,7 @@ void * const kNonSelectedAllBGKey = (void * const) &kNonSelectedAllBGKey;
 @implementation PXAlertView (Customization)
 
 - (void)setStatusBarStyle:(UIStatusBarStyle)style {
-    _statusBarStyle = style;
+    self.myStatusBarStyle = style;
 }
 
 - (void)useDefaultIOS7Style {
