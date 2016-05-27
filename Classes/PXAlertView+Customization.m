@@ -26,6 +26,7 @@ void * const kNonSelectedAllBGKey = (void * const) &kNonSelectedAllBGKey;
 @property (nonatomic) UIButton *cancelButton;
 @property (nonatomic) UIButton *otherButton;
 @property (nonatomic) NSArray *buttons;
+@property (nonatomic) NSMutableArray *lines;
 
 @end
 
@@ -53,7 +54,7 @@ void * const kNonSelectedAllBGKey = (void * const) &kNonSelectedAllBGKey;
 
 - (void)setCenter:(CGPoint)center
 {
-	self.alertView.center = center;
+    self.alertView.center = center;
 }
 
 - (void)setWindowTintColor:(UIColor *)color
@@ -163,6 +164,16 @@ void * const kNonSelectedAllBGKey = (void * const) &kNonSelectedAllBGKey;
     objc_setAssociatedObject(self, kNonSelectedAllBGKey, color, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     for (UIButton *button in self.buttons) {
         button.backgroundColor = color;
+    }
+}
+
+- (void)setAllButtonsBorderColor:(UIColor *)color
+{
+    objc_setAssociatedObject(self, kNonSelectedOtherBGKey, color, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, kNonSelectedCancelBGKey, color, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, kNonSelectedAllBGKey, color, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    for(CALayer *layer in self.lines) {
+        layer.backgroundColor = color.CGColor;
     }
 }
 

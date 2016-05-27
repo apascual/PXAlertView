@@ -38,4 +38,6 @@
 - (void)setCornerRadius:(CGFloat)radius;
 - (void)setCenter:(CGPoint)center;
 
+- (void)setAllButtonsBorderColor:(UIColor *)color;
+
 @end
