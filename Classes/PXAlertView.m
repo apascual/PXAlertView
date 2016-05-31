@@ -138,6 +138,7 @@ static const CGFloat AlertViewVerticalEdgeMinMargin = 25;
         [self.alertView addSubview:self.titleLabel];
         
         CGFloat messageLabelY = self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height + AlertViewVerticalElementSpace;
+        CGFloat nextPositionY = 0;
         
         // Optional Content View
         if (contentView) {
@@ -149,58 +150,62 @@ static const CGFloat AlertViewVerticalEdgeMinMargin = 25;
             self.contentView.center = CGPointMake(AlertViewWidth/2, self.contentView.center.y);
             [self.alertView addSubview:self.contentView];
             messageLabelY += contentView.frame.size.height + AlertViewVerticalElementSpace;
+            nextPositionY = self.contentView.frame.origin.y + self.contentView.frame.size.height;
         }
-        
-        // Message
-        self.messageScrollView = [[UIScrollView alloc] initWithFrame:(CGRect){
-            AlertViewContentMargin,
-            messageLabelY,
-            AlertViewWidth - AlertViewContentMargin*2,
-            44}];
-        self.messageScrollView.scrollEnabled = YES;
-        
-        self.messageLabel = [[UILabel alloc] initWithFrame:(CGRect){0, 0,
-            self.messageScrollView.frame.size}];
-        self.messageLabel.text = message;
-        self.messageLabel.backgroundColor = [UIColor clearColor];
-        self.messageLabel.textColor = [UIColor whiteColor];
-        self.messageLabel.textAlignment = NSTextAlignmentCenter;
-        self.messageLabel.font = [UIFont systemFontOfSize:15];
-        self.messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        self.messageLabel.numberOfLines = 0;
-        self.messageLabel.frame = [self adjustLabelFrameHeight:self.messageLabel];
-        self.messageScrollView.contentSize = self.messageLabel.frame.size;
-        
-        [self.messageScrollView addSubview:self.messageLabel];
-        [self.alertView addSubview:self.messageScrollView];
-        
-        // Get total button height
-        CGFloat totalBottomHeight = AlertViewLineLayerWidth;
-        if(self.buttonsShouldStack)
-        {
-            if(cancelTitle)
+        else {
+            // Message
+            self.messageScrollView = [[UIScrollView alloc] initWithFrame:(CGRect){
+                AlertViewContentMargin,
+                messageLabelY,
+                AlertViewWidth - AlertViewContentMargin*2,
+                44}];
+            self.messageScrollView.scrollEnabled = YES;
+            
+            self.messageLabel = [[UILabel alloc] initWithFrame:(CGRect){0, 0,
+                self.messageScrollView.frame.size}];
+            self.messageLabel.text = message;
+            self.messageLabel.backgroundColor = [UIColor clearColor];
+            self.messageLabel.textColor = [UIColor whiteColor];
+            self.messageLabel.textAlignment = NSTextAlignmentCenter;
+            self.messageLabel.font = [UIFont systemFontOfSize:15];
+            self.messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            self.messageLabel.numberOfLines = 0;
+            self.messageLabel.frame = [self adjustLabelFrameHeight:self.messageLabel];
+            self.messageScrollView.contentSize = self.messageLabel.frame.size;
+            
+            [self.messageScrollView addSubview:self.messageLabel];
+            [self.alertView addSubview:self.messageScrollView];
+            
+            // Get total button height
+            CGFloat totalBottomHeight = AlertViewLineLayerWidth;
+            if(self.buttonsShouldStack)
+            {
+                if(cancelTitle)
+                {
+                    totalBottomHeight += AlertViewButtonHeight;
+                }
+                if (otherTitles && [otherTitles count] > 0)
+                {
+                    totalBottomHeight += (AlertViewButtonHeight + AlertViewLineLayerWidth) * [otherTitles count];
+                }
+            }
+            else
             {
                 totalBottomHeight += AlertViewButtonHeight;
             }
-            if (otherTitles && [otherTitles count] > 0)
-            {
-                totalBottomHeight += (AlertViewButtonHeight + AlertViewLineLayerWidth) * [otherTitles count];
-            }
+            
+            self.messageScrollView.frame = (CGRect) {
+                self.messageScrollView.frame.origin,
+                self.messageScrollView.frame.size.width,
+                MIN(self.messageLabel.frame.size.height, self.alertWindow.frame.size.height - self.messageScrollView.frame.origin.y - totalBottomHeight - AlertViewVerticalEdgeMinMargin * 2)
+            };
+            
+            nextPositionY = self.messageScrollView.frame.origin.y + self.messageScrollView.frame.size.height;
         }
-        else
-        {
-            totalBottomHeight += AlertViewButtonHeight;
-        }
-        
-        self.messageScrollView.frame = (CGRect) {
-            self.messageScrollView.frame.origin,
-            self.messageScrollView.frame.size.width,
-            MIN(self.messageLabel.frame.size.height, self.alertWindow.frame.size.height - self.messageScrollView.frame.origin.y - totalBottomHeight - AlertViewVerticalEdgeMinMargin * 2)
-        };
         
         // Line
         CALayer *lineLayer = [self lineLayer];
-        lineLayer.frame = CGRectMake(0, self.messageScrollView.frame.origin.y + self.messageScrollView.frame.size.height + AlertViewVerticalElementSpace, AlertViewWidth, AlertViewLineLayerWidth);
+        lineLayer.frame = CGRectMake(0, nextPositionY + AlertViewVerticalElementSpace, AlertViewWidth, AlertViewLineLayerWidth);
         [self.alertView.layer addSublayer:lineLayer];
         [self.lines addObject:lineLayer];
         
